@@ -15,6 +15,10 @@ PARENT_KEY=$(curl -s -H "Authorization: Bearer $JIRA_API_TOKEN" \
 
 if [[ "$PARENT_KEY" == "null" ]]; then
   echo "$(date) Задача $ISSUE_KEY не является подзадачей" >> $LOG_FILE
+  echo -e "Status: 200 OK\r"
+  echo -e "Content-Type: text/plain\r"
+  echo -e "\r"
+  echo -e "Webhook received and logged."
   exit 0
 fi
 
@@ -99,6 +103,10 @@ PARENT_STATUS=$(curl -s -H "Authorization: Bearer $JIRA_API_TOKEN" \
 # Сравниваем с целевым статусом
 if [[ "$PARENT_STATUS" == "$TARGET_STATUS" ]]; then
   echo "$(date) Статус родителя $PARENT_KEY уже '$PARENT_STATUS' — переход не требуется" >> $LOG_FILE
+  echo -e "Status: 200 OK\r"
+  echo -e "Content-Type: text/plain\r"
+  echo -e "\r"
+  echo -e "Webhook received and logged."
   exit 0
 fi
 
